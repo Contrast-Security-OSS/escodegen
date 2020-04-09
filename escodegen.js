@@ -2118,6 +2118,7 @@
         },
 
         ClassProperty: function(expr, precedence, flags) {
+            // expr.value will be undefined when a ClassProperty is declared instead of initialized
             if(expr.value === undefined) {
                 return [ this.generatePropertyKey(expr.key) ];
             }
@@ -2131,6 +2132,7 @@
         },
 
         ClassPrivateProperty: function(expr, precedence, flags) {
+            // expr.value will be undefined when a ClassPrivateProperty is declared instead of initialized
             if(expr.value === undefined) {
                 return [
                     '#',
