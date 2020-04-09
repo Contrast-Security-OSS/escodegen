@@ -2118,20 +2118,33 @@
         },
 
         ClassProperty: function(expr, precedence, flags) {
-            return [
-                this.generatePropertyKey(expr.key),
-                '=',
-                this.generateExpression(expr.value)
-            ]
+            if(expr.value === undefined) {
+                return [ this.generatePropertyKey(expr.key) ];
+            }
+            else {
+                return [
+                    this.generatePropertyKey(expr.key),
+                    '=',
+                    this.generateExpression(expr.value),
+                ]
+            }
         },
 
         ClassPrivateProperty: function(expr, precedence, flags) {
-            return [
-                '#',
-                this.generatePropertyKey(expr.key),
-                '=',
-                this.generateExpression(expr.value)
-            ]
+            if(expr.value === undefined) {
+                return [
+                    '#',
+                    this.generatePropertyKey(expr.key)
+                ];
+            }
+            else {
+                return [
+                    '#',
+                    this.generatePropertyKey(expr.key),
+                    '=',
+                    this.generateExpression(expr.value)
+                ]
+            }
         },
 
         MethodDefinition: function (expr, precedence, flags) {
