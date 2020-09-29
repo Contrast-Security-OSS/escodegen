@@ -1883,6 +1883,9 @@
             var result, i, iz;
             // F_ALLOW_UNPARATH_NEW becomes false.
             result = [this.generateExpression(expr.callee, Precedence.Call, E_TTF)];
+            if (expr.optional) {
+                result.push('?.');
+            }
             result.push('(');
             for (i = 0, iz = expr['arguments'].length; i < iz; ++i) {
                 result.push(this.generateExpression(expr['arguments'][i], Precedence.Assignment, E_TTT));
@@ -1932,6 +1935,9 @@
             result = [this.generateExpression(expr.object, Precedence.Call, (flags & F_ALLOW_CALL) ? E_TTF : E_TFF)];
 
             if (expr.computed) {
+                if (expr.optional) {
+                  result.push('?.');
+                }
                 result.push('[');
                 result.push(this.generateExpression(expr.property, Precedence.Sequence, flags & F_ALLOW_CALL ? E_TTT : E_TFT));
                 result.push(']');
@@ -1952,6 +1958,9 @@
                             ) {
                         result.push(' ');
                     }
+                }
+                if (expr.optional) {
+                    result.push('?');
                 }
                 result.push('.');
                 result.push(generateIdentifier(expr.property));
