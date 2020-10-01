@@ -1825,17 +1825,29 @@
             if (Precedence.Conditional < precedence) {
                 flags |= F_ALLOW_IN;
             }
-            return parenthesize(
-                [
-                    this.generateExpression(expr.test, Precedence.LogicalOR, flags),
-                    space + '?' + space,
-                    this.generateExpression(expr.consequent, Precedence.Assignment, flags),
-                    space + ':' + space,
-                    this.generateExpression(expr.alternate, Precedence.Assignment, flags)
-                ],
-                Precedence.Conditional,
-                precedence
-            );
+            if (expr.nullish) {
+                return parenthesize(
+                    [
+                        this.generateExpression(expr.test, Precedence.LogicalOR, flags),
+                        space + '??' + space,
+                        this.generateExpression(expr.alternate, Precedence.Assignment, flags)
+                    ],
+                    Precedence.Conditional,
+                    precedence
+                );
+            } else {
+                return parenthesize(
+                    [
+                        this.generateExpression(expr.test, Precedence.LogicalOR, flags),
+                        space + '?' + space,
+                        this.generateExpression(expr.consequent, Precedence.Assignment, flags),
+                        space + ':' + space,
+                        this.generateExpression(expr.alternate, Precedence.Assignment, flags)
+                    ],
+                    Precedence.Conditional,
+                    precedence
+                );
+            }
         },
 
         LogicalExpression: function (expr, precedence, flags) {
